@@ -1,0 +1,14 @@
+import numpy as np
+import math
+import pandas as pd
+
+anto_file = (r"C:\Users\bubba\OneDrive\Documents\USGS Data\ANTO2_USGS.txt")
+plvo_file = (r"C:\Users\bubba\OneDrive\Documents\USGS Data\PLVO2_USGS.txt")
+
+with open(anto_file) as f:
+    anto = f.readlines()
+with open(plvo_file) as g:
+    plvo = g.readlines()
+
+print(anto)
+print(plvo)
