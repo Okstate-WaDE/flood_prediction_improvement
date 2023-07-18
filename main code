@@ -5,10 +5,8 @@ import pandas as pd
 anto_file = (r"C:\Users\bubba\OneDrive\Documents\USGS Data\ANTO2_USGS.txt")
 plvo_file = (r"C:\Users\bubba\OneDrive\Documents\USGS Data\PLVO2_USGS.txt")
 
-with open(anto_file) as f:
-    anto = f.readlines()
-with open(plvo_file) as g:
-    plvo = g.readlines()
+open(anto_file)
+open(plvo_file)
 
-print(anto)
-print(plvo)
+df_anto = pd.read_csv(anto_file, sep = '    ',header = 30)
+df_plvo = pd.read_csv(plvo_file, sep = '    ',header=32)
