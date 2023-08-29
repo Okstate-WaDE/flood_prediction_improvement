@@ -8,5 +8,35 @@ plvo_file = (r"C:\Users\bubba\OneDrive\Documents\USGS Data\PLVO2_USGS.txt")
 open(anto_file)
 open(plvo_file)
 
-df_anto = pd.read_csv(anto_file, sep = '    ',header = 30)
-df_plvo = pd.read_csv(plvo_file, sep = '    ',header=32)
+#anto file read and summary for USGS Data
+
+df_anto = pd.read_csv(anto_file_usgs, sep = '\t',header = 33,engine='python')
+df_anto.columns = ('org','site_num','datetime','timezone','streamflow','quality')
+df_anto['datetime'] = pd.to_datetime(df_anto['datetime'])
+df_anto['datetime'] = df_anto['datetime'].dt.tz_localize('US/Central',ambiguous= True)
+df_anto['datetime'] = df_anto['datetime'].dt.tz_convert('UTC')
+
+#plvo file read and summary for USGS Data
+
+df_plvo = pd.read_csv(plvo_file_usgs, sep = '\t',header=32,engine='python')
+df_plvo.columns = ('org','site_num','datetime','timezone','streamflow','quality')
+df_plvo['datetime'] = pd.to_datetime(df_plvo['datetime'])
+df_plvo['datetime'] = df_plvo['datetime'].dt.tz_localize('US/Central',ambiguous= True)
+
+#anto_simulation data import and read
+
+df_anto_sim = pd.read_csv(anto_file_sim, sep = '\t', header = 6, engine = 'python')
+df_anto_sim.columns = ('datetime','streamflow')
+df_anto_sim['datetime'] = pd.to_datetime(df_anto_sim['datetime'])
+df_anto_sim['datetime'] = df_anto_sim['datetime'].dt.tz_localize('US/Central',ambiguous= True)
+
+#plvo_simulation data import and read
+df_plvo_sim = pd.read_csv(plvo_file_sim, sep = '\t', header = 6, engine = 'python')
+df_plvo_sim.columns = ('datetime','streamflow')
+df_plvo_sim['datetime'] = pd.to_datetime(df_plvo_sim['datetime'])
+df_plvo_sim['datetime'] = df_plvo_sim['datetime'].dt.tz_localize('US/Central',ambiguous= True)
+
+#Merge codes for comparisons
+inner_join_anto = pd.merge(df_anto,df_anto_sim, on='datetime', how = 'inner')
+inner_join_plvo = pd.merge(df_plvo, df_plvo_sim, on ='datetime',how='inner')
+
