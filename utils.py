@@ -8,7 +8,6 @@ Original file is located at
 """
 
 import pandas as pd
-
 # Function definitions
 def read_usgs_data(file_path, header_line, timezone='US/Central', tz_convert='UTC'):
     df = pd.read_csv(file_path, sep='\t', header=header_line, engine='python')
@@ -16,6 +15,8 @@ def read_usgs_data(file_path, header_line, timezone='US/Central', tz_convert='UT
     df['datetime'] = pd.to_datetime(df['datetime'])
     df['datetime'] = df['datetime'].dt.tz_localize(timezone, ambiguous=True)
     df['datetime'] = df['datetime'].dt.tz_convert(tz_convert)
+    # Filter data from year 2007 onwards
+    df = df[df['datetime'].dt.year >= 2007]
     return df
 
 def read_simulation_data(file_path, header_line, timezone='US/Central'):
@@ -23,18 +24,6 @@ def read_simulation_data(file_path, header_line, timezone='US/Central'):
     df.columns = ('datetime', 'Sim_Discharge')
     df['datetime'] = pd.to_datetime(df['datetime'])
     df['datetime'] = df['datetime'].dt.tz_localize(timezone, ambiguous=True)
+    # Filter data from year 2007 onwards
+    df = df[df['datetime'].dt.year >= 2007]
     return df
-
-# File paths (these need to be set correctly before importing this module)
-anto_file = ("/content/drive/MyDrive/Datasets/raw/raw/ANTO2_USGS.txt")
-plvo_file = ("/content/drive/MyDrive/Datasets/raw/raw/PLVO2_USGS.txt")
-anto_file_sim = ("/content/drive/MyDrive/Datasets/raw/raw/ANTO2_sim.txt")
-plvo_file_sim = ("/content/drive/MyDrive/Datasets/raw/raw/PLVO2_sim.txt")
-
-# Read and preprocess the USGS data
-df_anto = read_usgs_data(anto_file, header_line=33)
-df_plvo = read_usgs_data(plvo_file, header_line=32)
-
-# Read and preprocess simulation data
-df_anto_sim = read_simulation_data(anto_file_sim, header_line=6)
-df_plvo_sim = read_simulation_data(plvo_file_sim, header_line=6)
