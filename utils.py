@@ -27,3 +27,7 @@ def read_simulation_data(file_path, header_line, timezone='US/Central'):
     # Filter data from year 2007 onwards
     df = df[df['datetime'].dt.year >= 2007]
     return df
+
+def prep_data():
+    # todo: fill out the code
+    pass
